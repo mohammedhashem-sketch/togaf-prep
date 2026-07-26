@@ -102,6 +102,7 @@
       <button id="mode-weak" class="mode-btn px-4 py-2 rounded font-medium bg-white text-slate-700 border border-slate-300">Weak-spot drill</button>
       <button id="mode-phasedrill" class="mode-btn px-4 py-2 rounded font-medium bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200">Phase Artifact Drill</button>
       <button id="open-reference" class="mode-btn px-4 py-2 rounded font-medium bg-emerald-100 text-emerald-900 border border-emerald-300 hover:bg-emerald-200" title="ADM cycle diagram + phase outputs cheat sheet">📖 ADM Reference</button>
+      <button id="open-summary" class="mode-btn px-4 py-2 rounded font-medium bg-purple-100 text-purple-900 border border-purple-300 hover:bg-purple-200" title="Compressed summary of all 6 TOGAF Standard Parts for quick reading">📚 Standard Summary</button>
       <div class="filter-row ml-auto flex flex-wrap gap-2 items-center">
         <label class="text-sm text-slate-600">Category:</label>
         <select id="category-filter" class="border border-slate-300 rounded px-2 py-1 text-sm min-w-0 flex-1 md:flex-none"></select>
@@ -135,6 +136,237 @@
   </div>
 
   <!-- =============== ADM REFERENCE MODAL =============== -->
+  <!-- =============== TOGAF STANDARD SUMMARY MODAL — cram sheet =============== -->
+  <div id="summary-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-2 md:p-4">
+    <div class="bg-white rounded-xl max-w-4xl w-full max-h-[95vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-slate-200 p-4 flex justify-between items-center z-10">
+        <h2 class="text-xl font-bold text-slate-900">📚 TOGAF Standard — Exam Cram Summary</h2>
+        <button id="close-summary" class="px-3 py-1 rounded bg-slate-200 hover:bg-slate-300 text-slate-700">Close ✕</button>
+      </div>
+      <div class="p-4 md:p-6 text-sm text-slate-800 leading-relaxed space-y-6">
+
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded text-xs">
+          <b>How to use:</b> This is a compressed cram sheet distilled from the 528-page official Standard (C220 Parts 0–5, 2025). Read once end-to-end (~15 min). Everything here is exam-testable. Bold text = highest-priority; red = classic exam traps.
+        </div>
+
+        <!-- ============================= PART 0 ============================= -->
+        <section>
+          <h3 class="text-lg font-bold text-indigo-700 mb-2">Part 0 — Introduction &amp; Core Concepts</h3>
+          <div class="space-y-2">
+            <p><b>What TOGAF is:</b> An open enterprise architecture framework AND methodology, published by <b>The Open Group</b>. Provides proven, structured approach to developing and using EA.</p>
+            <p><b>Enterprise</b> = any collection of organizations with a common set of goals. Not just corporations.</p>
+            <p><b>7 Core Concepts</b>: (1) Enterprise (2) Architecture Domains (3) Architecture Development Method (ADM) (4) Deliverables/Artifacts/Building Blocks (5) Enterprise Continuum (6) Architecture Repository (7) Architecture Capability</p>
+            <p><b>4 Architecture Domains (BDAT)</b>: <b>B</b>usiness → <b>D</b>ata → <b>A</b>pplication → <b>T</b>echnology. Business drives Data/App; those drive Technology.</p>
+            <div class="bg-slate-50 p-3 rounded space-y-1">
+              <div><b>Deliverable</b>: contractual, signed-off document (e.g., Vision, ADD, SoAW, Architecture Contract)</div>
+              <div><b>Artifact</b>: granular work product describing ONE aspect — catalog / matrix / diagram</div>
+              <div><b>Building Block</b>: reusable capability. <b>ABB</b> = conceptual (WHAT). <b>SBB</b> = component (HOW).</div>
+            </div>
+            <p><b>Enterprise Continuum</b>: virtual repository that classifies assets from generic → specific. <b>Foundation → Common Systems → Industry → Organization-Specific</b>. Same order for Architecture Continuum and Solutions Continuum.</p>
+            <p class="text-red-700"><b>Trap:</b> Common Systems comes BEFORE Industry. Do not swap them.</p>
+            <p><b>Architecture Repository components</b>: Metamodel · EA Capability · Architecture Landscape (Strategic / Segment / Capability — 3 levels) · Standards Information Base (SIB) · Reference Library · Governance Log · <b>Requirements Repository</b> (TOGAF 10 add) · <b>Solutions Landscape</b> (TOGAF 10 add).</p>
+            <p><b>Content Framework</b> = catalog of what artifacts exist. <b>Enterprise Metamodel</b> = formal entity types + relationships used inside them.</p>
+            <p><b>View</b> = representation of a system from one stakeholder's concern set. <b>Viewpoint</b> = the rules used to construct a view. <b>Concern</b> = stakeholder interest.</p>
+            <p><b>Enterprise Agility</b>: broader than Agile software dev. Enabled by <b>Partitions</b> (break work into multiple initiatives) + <b>Levels</b> (granularity) + <b>Iteration</b> (repeat phases with depth).</p>
+            <p><b>Risk Management — two levels</b>: (1) <b>Initial</b> = risk categorization BEFORE mitigation. (2) <b>Residual</b> = risk categorization AFTER mitigation. Risks accepted &amp; managed <b>within the governance framework</b>.</p>
+            <p><b>Interoperability</b> = ability to share information and services. Three categories: <b>Operational (Business)</b> · <b>Information</b> · <b>Technical</b>. First addressed in <b>Phase A</b> (Business Scenarios); logically implemented in <b>Phase F</b>.</p>
+          </div>
+        </section>
+
+        <!-- ============================= PART 1 ============================= -->
+        <section>
+          <h3 class="text-lg font-bold text-blue-700 mb-2">Part 1 — Architecture Development Method (ADM)</h3>
+          <p class="mb-2">Cycle order: <b>Preliminary → A → B → C → D → E → F → G → H</b>. Requirements Management at the center.</p>
+          <div class="space-y-2">
+            <div class="border-l-4 border-indigo-500 pl-3">
+              <b>Preliminary Phase</b> — Prep the org. Tailor TOGAF, establish capability, principles, governance.
+              <br><span class="text-xs">Outputs: Organizational Model for EA · Tailored Framework · Governance Framework · Principles · <b>Request for Architecture Work</b> (feeds Phase A)</span>
+            </div>
+            <div class="border-l-4 border-blue-500 pl-3">
+              <b>Phase A — Architecture Vision</b> — High-level vision + stakeholder buy-in.
+              <br><span class="text-xs">Outputs: <b>Statement of Architecture Work</b> (signed) · Architecture Vision · Communications Plan · Refined Principles · Business Scenarios · Capability Assessment · <b>Draft ADD</b> · <b>Draft Architecture Requirements Spec</b> · Stakeholder Map</span>
+            </div>
+            <div class="border-l-4 border-blue-500 pl-3">
+              <b>Phase B — Business Architecture</b> — Baseline + Target Business.
+              <br><span class="text-xs">Artifacts: Business Interaction Matrix · Actor/Role Catalog · Business Service/Function Catalog · Value Chain · Business Capability Map · Functional Decomp Diagram · <b>Business Use-Case Diagram</b> · <b>Product Lifecycle Diagram</b> · Business Footprint Diagram</span>
+            </div>
+            <div class="border-l-4 border-blue-500 pl-3">
+              <b>Phase C — Information Systems</b> — Data + Application (may run sequential or parallel).
+              <br><span class="text-xs"><b>Data</b>: Data Entity Catalog · Data Dissemination Diagram · Data Lifecycle · Data Security · Data Migration · Logical Data Diagram<br><b>Application</b>: Application Portfolio Catalog · Interface Catalog · Application Interaction Matrix · Application Communication Diagram · <b>Application Use-Case Diagram</b> · Enterprise Manageability · Application Migration · Software Engineering Diagram</span>
+            </div>
+            <div class="border-l-4 border-blue-500 pl-3">
+              <b>Phase D — Technology Architecture</b> — Baseline + Target Tech.
+              <br><span class="text-xs">Artifacts: Technology Standards Catalog · Technology Portfolio Catalog · Application/Technology Matrix · Environments &amp; Locations Diagram · Platform Decomposition · Networked Computing · Communications Engineering · Processing Diagram</span>
+            </div>
+            <div class="border-l-4 border-purple-500 pl-3">
+              <b>Phase E — Opportunities &amp; Solutions</b> — <b>STRATEGY</b>, not detailed plan. Identify work packages + Transition Architectures.
+              <br><span class="text-xs">Outputs: Architecture Roadmap · Transition Architectures · <b>INITIAL Implementation &amp; Migration Plan</b> · Consolidated Gaps/Solutions/Dependencies Matrix · Business Value Assessment · Capability Assessment</span>
+            </div>
+            <div class="border-l-4 border-purple-500 pl-3">
+              <b>Phase F — Migration Planning</b> — <b>DETAILED</b> timed &amp; costed plan.
+              <br><span class="text-xs">Outputs: <b>DETAILED I&amp;M Plan</b> · Finalized ADD · Finalized Architecture Requirements Spec · Finalized Architecture Roadmap · Finalized Transition Architectures · Implementation Governance Model</span>
+              <br><span class="text-xs text-red-700"><b>Trap:</b> Phase E = INITIAL (strategy) · Phase F = DETAILED (timed/costed). Do not confuse.</span>
+            </div>
+            <div class="border-l-4 border-purple-500 pl-3">
+              <b>Phase G — Implementation Governance</b> — Oversight of implementation, enforce architecture.
+              <br><span class="text-xs">Outputs: <b>Architecture Contracts</b> (with implementation partners) · <b>Compliance Assessments</b> · Change Requests · deployed compliant solutions</span>
+            </div>
+            <div class="border-l-4 border-purple-500 pl-3">
+              <b>Phase H — Change Management</b> — Manage change to deployed architecture.
+              <br><span class="text-xs">Outputs: Architecture updates · Change Requests (may trigger new ADM cycle). <b>3 change types</b>: Simplification (no new capability) · Incremental (extends) · Re-Architecting (new capability → new ADM cycle)</span>
+            </div>
+            <div class="border-l-4 border-amber-500 pl-3">
+              <b>Requirements Management</b> — Central hub, NOT a phase. Manages evolving requirements across every phase. Populates Requirements Repository.
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================= PART 2 ============================= -->
+        <section>
+          <h3 class="text-lg font-bold text-emerald-700 mb-2">Part 2 — Techniques for Adapting the ADM</h3>
+          <div class="space-y-2">
+            <p><b>Architecture Principles — 4 components</b>: <b>Name · Statement · Rationale · Implications</b>. Enduring but review annually / on major change.</p>
+            <p><b>21 default Architecture Principles</b> — grouped by BDAT:</p>
+            <div class="bg-slate-50 p-3 rounded text-xs space-y-1">
+              <div><b>Business (P1-P9)</b>: (1) Primacy of Principles (2) Maximize Benefit to the Enterprise (3) Information Management is Everybody's Business (4) Business Continuity (5) Common Use Applications (6) Service Orientation (7) Compliance with Law (8) IT Responsibility (9) Protection of Intellectual Property</div>
+              <div><b>Data (P10-P15)</b>: (10) <b>Data is an Asset</b> (11) Data is Shared (12) Data is Accessible (13) Data Trustee (14) Common Vocabulary/Data Definitions (15) Data Security</div>
+              <div><b>Application (P16-P17)</b>: (16) Technology Independence (17) Ease-of-Use</div>
+              <div><b>Technology (P18-P21)</b>: (18) Requirements-Based Change (19) Responsive Change Management (20) Control Technical Diversity (21) <b>Interoperability</b></div>
+            </div>
+            <p><b>Stakeholder Management — Power/Interest grid</b>:</p>
+            <div class="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded">
+              <div><b>High Power + High Interest</b> → <span class="text-red-700">Manage Closely</span></div>
+              <div><b>High Power + Low Interest</b> → <span class="text-amber-700">Keep Satisfied</span></div>
+              <div><b>Low Power + High Interest</b> → <span class="text-blue-700">Keep Informed</span></div>
+              <div><b>Low Power + Low Interest</b> → <span class="text-slate-600">Monitor</span></div>
+            </div>
+            <p><b>Architecture Patterns — content structure</b>: Name · Problem · Context · Forces · Solution · Resulting Context · Examples · Rationale · Related Patterns · Known Uses. Architecture Patterns work at higher abstraction than Design Patterns.</p>
+            <p><b>Gap Analysis</b>: identify delta between Baseline and Target. Feeds Consolidated Gaps/Solutions/Dependencies Matrix in Phase E.</p>
+            <p><b>Interoperability Requirements</b>: define the degree info/services are shared. Determined progressively across Phases A→F.</p>
+            <p><b>Business Transformation Readiness Assessment (BTRA)</b>: assess org's readiness for major change. From <b>Business Transformation Enablement Program (BTEP)</b>. Applied in Phase A. Feeds risk identification.</p>
+            <p><b>Capability-Based Planning</b>: focus on business capability outcomes as unit of investment. Complements ADM.</p>
+          </div>
+        </section>
+
+        <!-- ============================= PART 3 ============================= -->
+        <section>
+          <h3 class="text-lg font-bold text-teal-700 mb-2">Part 3 — Applying the ADM</h3>
+          <div class="space-y-2">
+            <p><b>Iteration is expected</b>, not optional. 4 common iteration patterns:</p>
+            <ul class="list-disc pl-5 text-xs space-y-0.5">
+              <li><b>Architecture Context</b> iteration (Preliminary + A)</li>
+              <li><b>Architecture Definition</b> iteration (B + C + D)</li>
+              <li><b>Transition Planning</b> iteration (E + F)</li>
+              <li><b>Architecture Governance</b> iteration (G + H)</li>
+            </ul>
+            <p><b>Levels</b> — 3 levels of granularity: <b>Strategic</b> (long-term summary) · <b>Segment</b> (specific portfolios) · <b>Capability</b> (specific solutions).</p>
+            <p><b>Partitions</b> — break work into multiple architecture initiatives (by domain, geography, business unit, etc.). Enables agility.</p>
+            <p><b>Security</b> integrated into every phase (not a separate phase). Security concerns handled via Business Scenarios (A), Data Security Diagram (C-Data), and compliance checks (G).</p>
+          </div>
+        </section>
+
+        <!-- ============================= PART 4 ============================= -->
+        <section>
+          <h3 class="text-lg font-bold text-orange-700 mb-2">Part 4 — Content Framework</h3>
+          <div class="space-y-2">
+            <p><b>Content Metamodel</b> defines the formal entity types (Business Service, Data Entity, Application Component, Technology Component, etc.) and their relationships.</p>
+            <p><b>Artifacts organized as</b>: <b>Catalog</b> (list) · <b>Matrix</b> (grid mapping two dimensions) · <b>Diagram</b> (visual).</p>
+            <p><b>Deliverable list</b> (21 formal deliverables): Architecture Building Blocks · Architecture Contract · <b>Architecture Definition Document (ADD)</b> · Architecture Principles · Architecture Repository · Architecture Requirements Specification · Architecture Roadmap · Architecture Vision · Business Principles/Goals/Drivers · Capability Assessment · Change Request · Communications Plan · Compliance Assessment · Implementation and Migration Plan · Implementation Governance Model · Organizational Model for EA · Request for Architecture Work · Requirements Impact Assessment · Solution Building Blocks · Statement of Architecture Work · Tailored Architecture Framework</p>
+            <p><b>Building Blocks</b>: <b>ABBs</b> defined FIRST, describe required capability. <b>SBBs</b> implement ABBs (products, systems, custom builds).</p>
+            <p class="text-red-700 text-xs"><b>Trap:</b> Deliverable ≠ Artifact ≠ Building Block. Know all three definitions cold.</p>
+          </div>
+        </section>
+
+        <!-- ============================= PART 5 ============================= -->
+        <section>
+          <h3 class="text-lg font-bold text-red-700 mb-2">Part 5 — EA Capability &amp; Governance</h3>
+          <div class="space-y-2">
+            <p><b>Architecture Board</b>: 4–5 members recommended. Governs implementation of EA strategy. Composed of sponsors + architects. Monitors compliance.</p>
+            <p><b>3 types of Architecture Contract</b>:</p>
+            <ol class="list-decimal pl-5 text-xs space-y-0.5">
+              <li><b>Statement of Architecture Work</b> — Phase A, between architecting org and <b>sponsor</b></li>
+              <li><b>Contract with implementation partners</b> — beginning of <b>Phase G</b>, between architecture function and dev/implementers</li>
+              <li><b>Contract with business stakeholders</b> — after Phase F, when ADD is finalized, between architecting function and business users</li>
+            </ol>
+            <p><b>Architecture Compliance — "in accordance with" the architecture</b> means the implementation:</p>
+            <ul class="list-disc pl-5 text-xs space-y-0.5">
+              <li>Supports the stated strategy and future directions</li>
+              <li>Adheres to the stated <b>standards</b> (syntax + semantic rules)</li>
+              <li>Provides the stated <b>functionality</b></li>
+              <li>Adheres to the stated <b>principles</b> (e.g., Open wherever possible, Re-use of building blocks wherever possible)</li>
+            </ul>
+            <p><b>Compliance Reviews</b> conducted in Phase G. The <b>PROCESS</b> for compliance reviews is defined in the <b>Preliminary Phase</b> (governance framework).</p>
+            <p><b>Dispensation</b>: formal exemption from compliance, granted by Architecture Board with rationale. Used when non-compliant implementation must proceed for business reasons.</p>
+            <p><b>Governance Framework</b> established in Preliminary Phase. Includes: process, content, phenomena, context. Owned by Architecture Board.</p>
+          </div>
+        </section>
+
+        <!-- ============================= EXAM DAY QUICK REFERENCE ============================= -->
+        <section class="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-lg p-4 border-2 border-emerald-300">
+          <h3 class="text-lg font-bold text-emerald-900 mb-3">🎯 Exam Day Quick Reference (memorize these cold)</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div class="bg-white p-3 rounded">
+              <b class="text-blue-700">Phase → signature output</b>
+              <ul class="list-disc pl-4 mt-1 space-y-0.5">
+                <li>Preliminary → Request for Architecture Work</li>
+                <li>A → SoAW + Vision + Draft ADD</li>
+                <li>B → Baseline/Target Business</li>
+                <li>C → Baseline/Target Data + Application</li>
+                <li>D → Baseline/Target Technology</li>
+                <li>E → Roadmap + INITIAL Migration Plan</li>
+                <li>F → DETAILED Migration Plan + Final ADD</li>
+                <li>G → Architecture Contracts + Compliance</li>
+                <li>H → Change Requests + reclassification</li>
+              </ul>
+            </div>
+            <div class="bg-white p-3 rounded">
+              <b class="text-red-700">Classic traps</b>
+              <ul class="list-disc pl-4 mt-1 space-y-0.5">
+                <li>Data Migration Diagram = <b>Phase C-Data</b>, NOT Phase F</li>
+                <li>Application Use-Case = <b>Phase C-App</b>, NOT B</li>
+                <li>Business Use-Case = <b>Phase B</b> (different artifact)</li>
+                <li>Common Systems comes BEFORE Industry</li>
+                <li>Draft ADD = Phase A · Final ADD = Phase F</li>
+                <li>Phase E = strategy · Phase F = detailed plan</li>
+                <li>SoAW = engagement authorization · Architecture Contract = implementation authorization</li>
+                <li>Compliance PROCESS defined in Preliminary · EXECUTED in Phase G</li>
+              </ul>
+            </div>
+            <div class="bg-white p-3 rounded">
+              <b class="text-purple-700">Ordered lists to memorize</b>
+              <ul class="list-disc pl-4 mt-1 space-y-0.5">
+                <li><b>BDAT</b>: Business, Data, Application, Technology</li>
+                <li><b>Continuum</b>: Foundation → Common Systems → Industry → Organization-Specific</li>
+                <li><b>Landscape levels</b>: Strategic → Segment → Capability</li>
+                <li><b>Change types</b>: Simplification, Incremental, Re-Architecting</li>
+                <li><b>Iterations</b>: Context, Definition, Transition Planning, Governance</li>
+                <li><b>Principle elements</b>: Name, Statement, Rationale, Implications</li>
+              </ul>
+            </div>
+            <div class="bg-white p-3 rounded">
+              <b class="text-amber-700">Definitions cheat sheet</b>
+              <ul class="list-disc pl-4 mt-1 space-y-0.5">
+                <li><b>Enterprise</b> = group of orgs with common goals</li>
+                <li><b>Interoperability</b> = ability to share info/services</li>
+                <li><b>Architecture Framework</b> = conceptual structure</li>
+                <li><b>Architecture Vision</b> = high-level aspiration</li>
+                <li><b>Architecture Roadmap</b> = work packages in a timeline</li>
+                <li><b>Transition Architecture</b> = intermediate state</li>
+                <li><b>Gap</b> = delta between Baseline and Target</li>
+                <li><b>Deliverable</b> = signed contractual doc</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <div class="bg-slate-100 p-3 rounded text-xs text-slate-600">
+          <b>Sources:</b> The Open Group TOGAF® Standard 2025 (C220), Parts 0–5 (528 pages) — Introduction/Core Concepts, ADM, Techniques, Applying the ADM, Content Framework, EA Capability &amp; Governance. Written summary for Mohammed's OGEA-101 exam prep (July 30, 2026). Not affiliated with or endorsed by The Open Group. TOGAF® is a registered trademark of The Open Group.
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <div id="reference-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-2 md:p-4">
     <div class="bg-white rounded-xl max-w-5xl w-full max-h-[95vh] overflow-y-auto">
       <div class="sticky top-0 bg-white border-b border-slate-200 p-4 flex justify-between items-center z-10">
@@ -1432,6 +1664,14 @@ document.getElementById('open-reference').addEventListener('click', () => {
 });
 document.getElementById('close-reference').addEventListener('click', () => {
   document.getElementById('reference-modal').classList.add('hidden');
+  document.body.style.overflow = '';
+});
+document.getElementById('open-summary').addEventListener('click', () => {
+  document.getElementById('summary-modal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+});
+document.getElementById('close-summary').addEventListener('click', () => {
+  document.getElementById('summary-modal').classList.add('hidden');
   document.body.style.overflow = '';
 });
 // Also close reference modal on Escape
