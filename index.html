@@ -1237,15 +1237,20 @@ function setMode(mode) {
     state.quizFinished = false;
     startTimer();
   } else if (mode === 'weak') {
-    // Only questions from weakest categories (>=25% wrong rate)
-    const weakCats = Object.entries(state.weaknessByCategory)
-      .filter(([c, s]) => s.seen >= 3 && s.wrong / s.seen >= 0.25)
-      .map(([c]) => c);
-    if (weakCats.length === 0) {
-      // Fall back to wrong-answered questions
+    // PRIORITY 1: Show specific questions the user got WRONG this session.
+    // Only if there are none, fall back to weakest categories.
+    if (state.wrongQuestionIds.size > 0) {
       state.filteredQuestions = ALL_QUESTIONS.filter(q => state.wrongQuestionIds.has(q.id));
     } else {
-      state.filteredQuestions = ALL_QUESTIONS.filter(q => weakCats.includes(q.cat));
+      const weakCats = Object.entries(state.weaknessByCategory)
+        .filter(([c, s]) => s.seen >= 3 && s.wrong / s.seen >= 0.25)
+        .map(([c]) => c);
+      if (weakCats.length > 0) {
+        state.filteredQuestions = ALL_QUESTIONS.filter(q => weakCats.includes(q.cat));
+      } else {
+        // No misses yet — show a friendly message via empty filter
+        state.filteredQuestions = [];
+      }
     }
     state.currentIndex = 0;
     stopTimer();
