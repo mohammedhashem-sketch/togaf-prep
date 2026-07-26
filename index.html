@@ -1025,6 +1025,38 @@ let state = {
   unseenOnly: false
 };
 
+// ========== LOCALSTORAGE PERSISTENCE ==========
+// Saves quiz progress across page refreshes so weak-spot drill works properly.
+const LS_KEY = 'togaf-v3-progress';
+
+function persistState() {
+  try {
+    const data = {
+      wrong: Array.from(state.wrongQuestionIds),
+      seen: Array.from(state.seenQuestionIds),
+      weakness: state.weaknessByCategory,
+      answers: state.quizAnswers
+    };
+    localStorage.setItem(LS_KEY, JSON.stringify(data));
+  } catch (e) { /* localStorage may fail in private mode — ignore */ }
+}
+
+function restoreState() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (Array.isArray(data.wrong)) state.wrongQuestionIds = new Set(data.wrong);
+    if (Array.isArray(data.seen)) state.seenQuestionIds = new Set(data.seen);
+    if (data.weakness && typeof data.weakness === 'object') state.weaknessByCategory = data.weakness;
+    if (data.answers && typeof data.answers === 'object') state.quizAnswers = data.answers;
+  } catch (e) { /* corrupted state — ignore, start fresh */ }
+}
+
+function clearPersistedState() {
+  try { localStorage.removeItem(LS_KEY); } catch (e) {}
+}
+
 // ============ CATEGORIZE C-BIAO ============
 function categorizeCbiao(q) {
   const combined = ((q.question || '') + ' ' + (q.answer || '') + ' ' + (q.explanation || '')).toLowerCase();
@@ -1155,6 +1187,7 @@ function renderCard() {
             state.weaknessByCategory[q.cat].wrong++;
             state.wrongQuestionIds.add(q.id);
           }
+          persistState();
           updateStats();
           renderCard();
         });
@@ -1369,6 +1402,7 @@ document.getElementById('reset-btn').addEventListener('click', () => {
     state.wrongQuestionIds.clear();
     state.weaknessByCategory = {};
     state.quizAnswers = {};
+    clearPersistedState();
     document.getElementById('seen-count').textContent = '0';
     filterByCategory();
   }
@@ -1392,11 +1426,16 @@ window.addEventListener('error', function(ev) {
 });
 
 // ============ INIT (bulletproof) ============
+try { restoreState(); } catch (e) { console.error('restoreState failed:', e); }
+
 try {
   renderCategoryFilter();
 } catch (e) {
   console.error('renderCategoryFilter failed:', e);
 }
+
+// Update seen counter from restored state
+try { document.getElementById('seen-count').textContent = state.seenQuestionIds.size; } catch (e) {}
 
 // Force filteredQuestions to always have content, even if something upstream broke
 if (!Array.isArray(state.filteredQuestions) || state.filteredQuestions.length === 0) {
